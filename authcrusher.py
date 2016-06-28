@@ -19,9 +19,13 @@ def main():
 
     def db_unpacker():
 
-        ambur_db_zip_path = max(glob.glob('../downloads/*.zip'), key=os.path.getctime)
-        head, tail = os.path.split(ambur_db_zip_path)
-        ambur_db_zip = tail
+        try:
+            ambur_db_zip_path = max(glob.glob('../downloads/*.zip'), key=os.path.getctime)
+            head, tail = os.path.split(ambur_db_zip_path)
+            ambur_db_zip = tail
+        except ValueError:
+            print("\nCrom can't crush what doesn't exist.\nMake sure you actually downloaded the file.")
+            quit()
         if os.path.exists('../Desktop/temple_of_crom'):
             shutil.rmtree('../Desktop/temple_of_crom')
             os.mkdir('../Desktop/temple_of_crom')
@@ -120,7 +124,7 @@ def main():
         if will_you_crush_them in ['y','yes']:
             ask_gateway_check = 0
             while ask_gateway_check == 0:
-                ask_gateway = input("""Which great enemy do your auths serve?
+                ask_gateway = input("""\nWhich great enemy do your auths serve?
                 1. The lord of burning bridges
                 2. The god of war
                 Enter 1 or 2: """).lower()
