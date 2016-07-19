@@ -75,11 +75,11 @@ def main():
         #if so, ask user if they want to use that db
         print("Checking for existing database.\n")
         while True:
-            if os.path.exists('../Desktop/temple_of_crom'):
-                check_for_db = glob.glob('../Desktop/temple_of_crom/*.adb1')
+            temple_file_path = os.path.expanduser('~/Desktop/temple_of_crom')
+            if os.path.exists(temple_file_path):
+                check_for_db = glob.glob('{}/*.adb1'.format(temple_file_path))
                 if check_for_db:
                     for item in check_for_db:
-                        item.replace('..', '~')
                         full_db_path = os.path.expanduser(item)
                         ask_to_use = input("A database is available in the temple; would you like to use this file? ".format(item)).lower()
                         if ask_to_use in ['y','yes']:
@@ -100,16 +100,17 @@ def main():
 
     def unpack():
 
-        db_zip_path = max(glob.glob('../downloads/*.zip'), key=os.path.getctime)
+        db_zip_path = max(glob.glob('Users/*/downloads/*.zip'), key=os.path.getctime)
         head, tail = os.path.split(db_zip_path)
         db_zip = tail
-        if os.path.exists('../Desktop/temple_of_crom'):
-            shutil.rmtree('../Desktop/temple_of_crom')
-            os.mkdir('../Desktop/temple_of_crom')
+        temple_file_path = os.path.expanduser('~/Desktop/temple_of_crom')
+        if os.path.exists(temple_file_path):
+            shutil.rmtree(temple_file_path)
+            os.mkdir(temple_file_path)
         else:
-            os.mkdir('../Desktop/temple_of_crom')
+            os.mkdir(temple_file_path)
 
-        os.rename(db_zip_path, '../Desktop/temple_of_crom/{}'.format(db_zip))
+        os.rename(db_zip_path, '{}/{}'.format(temple_file_path, db_zip))
         new_db_path = os.path.expanduser('~/Desktop/temple_of_crom/{}'.format(db_zip))
         os.system('unzip -d ~/Desktop/temple_of_crom ~/Desktop/temple_of_crom/"{}"'.format(db_zip))
         if conan_on:
