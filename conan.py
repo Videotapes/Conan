@@ -100,7 +100,7 @@ def main():
 
     def unpack():
 
-        db_zip_path = max(glob.glob('Users/*/downloads/*.zip'), key=os.path.getctime)
+        db_zip_path = max(glob.glob('/Users/*/downloads/*.zip'), key=os.path.getctime)
         head, tail = os.path.split(db_zip_path)
         db_zip = tail
         temple_file_path = os.path.expanduser('~/Desktop/temple_of_crom')
@@ -265,6 +265,8 @@ def main():
 
     def db_dump(database_path):
 
+        temple_file_path = os.path.expanduser("~/Desktop/temple_of_crom/")
+
         try:
             conn_db = sqlite3.connect(database_path, timeout=5000)
             cursor_db = conn_db.cursor()
@@ -289,12 +291,13 @@ def main():
                 print("When this process is complete, you will be returned to the menu.")
 
                 try: #this breaks on the rename; figure out what's wrong with this
-                    os.rename(database_path, '~/Desktop/temple_of_crom/corruptdatabase.adb1')
-                    os.system('sqlite3 ~/Desktop/temple_of_crom/corruptdatabase.adb1 ".dump" | sqlite3 uncorrupted.adb1')
+                    os.rename(database_path, '{}/corruptdatabase.adb1'.format(temple_file_path))
+                    os.system('sqlite3 ~/Desktop/temple_of_crom/corruptdatabase.adb1 ".dump" | sqlite3 ~/Desktop/temple_of_crom/uncorrupted.adb1')
 
                     menu()
                 except:
                     print("\nSomething went wrong in the worst place.\nPlease notify Stache and save the database.\n")
+                    quit()
 
             elif proceed in ['n','no']:
                 if conan_on:
