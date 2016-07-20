@@ -9,7 +9,7 @@ def main():
             """)
         conan_on = 0
         while True:
-            user_selection = input("Enable full Conan mode? ").lower()
+            user_selection = input("Enable full Conan mode? (Do not enable for serious work.) ").lower()
             if user_selection in ['y','yes']:
                 print("\nCrom accepts your offering.\n")
                 conan_on = 1
