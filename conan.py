@@ -35,8 +35,9 @@ def main():
             main_menu = {'1. Prepare for battle':unpack,
                 '2. Crush your auths':authcrusher,
                 '3. Burn the fortress of your enemy':db_dump,
-                '4. Ask Crom for guidance':help,
-                '5. End your quest':quit}
+                '4. Interrogate the enemy for secrets':find_pin,
+                '5. Ask Crom for guidance':help,
+                '6. End your quest':quit}
             print("Welcome, warrior.")
 
 
@@ -44,23 +45,24 @@ def main():
             main_menu = {'1. Unpack':unpack,
                 '2. Auth Timestamp Update':authcrusher,
                 '3. Corrupted Database Fixer':db_dump,
-                '4. Help':help,
-                '5. Quit':quit}
+                '4. Find Master PIN':find_pin,
+                '5. Help':help,
+                '6. Quit':quit}
             print("\nConan Main Menu\n")
 
         while True:
             for key in sorted(main_menu.keys()):
                 print(key)
             menu_selection = input("\nSelect an option: ")
-            if menu_selection in ['1','4']:
+            if menu_selection in ['1','5']:
                 for key in main_menu.keys():
                         if menu_selection in key:
                             main_menu[key]()
-            elif menu_selection in ['2','3']:
+            elif menu_selection in ['2','3','4']:
                 for key in main_menu.keys():
                     if menu_selection in key:
                         full_temple(main_menu[key])
-            elif menu_selection == '5':
+            elif menu_selection == '6':
                 os._exit(1)
                 #This is a temporary (bad) workaround for a weird exit issue
             else:
@@ -120,6 +122,34 @@ def main():
 
         menu()
 
+
+    def find_pin(database_path):
+
+        query_for_pin = "SELECT ZPASSWORD FROM ZUSER WHERE ZISDELETABLE = 0"
+
+        try:
+            conn_db = sqlite3.connect(database_path, timeout=5000)
+            cursor_db = conn_db.cursor()
+
+        except:
+            if conan_on:
+                print("\nCrom has forsaken you.\n")
+                menu()
+            else:
+                print("\nConnection to database failed.\n")
+                menu()
+
+
+        cursor_db.execute(query_for_pin)
+        for row in cursor_db.fetchall():
+            for item in row:
+                print("""
+The master password is --->{}<---
+If nothing was returned, please contact Stache.
+                """.format(item))
+        cursor_db.close()
+        conn_db.close()
+        menu()
 
     def authcrusher(database_path):
 
@@ -327,6 +357,9 @@ def main():
             Burn the fortress of your enemy
                 Warrior!  When your enemy has hidden himself in a corrupted fortress
                 purify him in the fires of Crom.
+
+            Interrogate your enemy for secrets
+                No secret is hidden from Crom's sight.
             """)
 
         else:
@@ -346,6 +379,9 @@ def main():
                 Dumps the contents of a database in temple_of_crom into a sqlite text file
                 and then uses the sqlite text file to rebuild a functional database. The new database
                 will be saved as uncorrupted.adb1.
+
+            Find Master PIN
+                Connects to the database in temple_of_crom and pulls the master user password.
             """)
 
 
