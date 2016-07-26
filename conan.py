@@ -35,7 +35,7 @@ def main():
             main_menu = {'1. Prepare for battle':unpack,
                 '2. Crush your auths':authcrusher,
                 '3. Burn the fortress of your enemy':db_dump,
-                '4. Interrogate the enemy for secrets':find_pin,
+                '4. Interrogate the enemy for secrets':find_pw,
                 '5. Ask Crom for guidance':help,
                 '6. End your quest':quit}
             print("Welcome, warrior.")
@@ -45,7 +45,7 @@ def main():
             main_menu = {'1. Unpack':unpack,
                 '2. Auth Timestamp Update':authcrusher,
                 '3. Corrupted Database Fixer':db_dump,
-                '4. Find Master PIN':find_pin,
+                '4. Find Master PW':find_pw,
                 '5. Help':help,
                 '6. Quit':quit}
             print("\nConan Main Menu\n")
@@ -123,9 +123,9 @@ def main():
         menu()
 
 
-    def find_pin(database_path):
+    def find_pw(database_path):
 
-        query_for_pin = "SELECT ZPASSWORD FROM ZUSER WHERE ZISDELETABLE = 0"
+        query_for_pw = "SELECT ZPASSWORD FROM ZUSER WHERE ZISDELETABLE = 0"
 
         try:
             conn_db = sqlite3.connect(database_path, timeout=5000)
@@ -380,7 +380,7 @@ If nothing was returned, please contact Stache.
                 and then uses the sqlite text file to rebuild a functional database. The new database
                 will be saved as uncorrupted.adb1.
 
-            Find Master PIN
+            Find Master PW
                 Connects to the database in temple_of_crom and pulls the master user password.
             """)
 
