@@ -140,7 +140,7 @@ def main():
                 menu()
 
 
-        cursor_db.execute(query_for_pin)
+        cursor_db.execute(query_for_pw)
         for row in cursor_db.fetchall():
             for item in row:
                 print("""
